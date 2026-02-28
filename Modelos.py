@@ -53,8 +53,7 @@ class consulta:
             data = datetime.datetime.strptime(data,"%d/%m/%Y") # usando a biblioteca datetime ele padroniza e formata a data em dia/mês/ano
             return True
             
-        except ValueError as e:
-            print(f'\nErro: {e} - Data Inexistente!\n')
+        except ValueError:
             return False
     
     def validar_horario(self):
