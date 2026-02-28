@@ -10,7 +10,9 @@ class consulta:
     Representa uma consulta médica no sistema do consultório
     Responsável por armazenar dados do paciente e validar regras de negócio
     """
-    def __init__(self,codPaciente,nomePaciente,data,horario,nome_medico,tipoConsluta):
+    
+    contador_id = 0 # define o valor base para o ID
+    def __init__(self,nomePaciente,data,horario,nome_medico,tipoConsluta):
         
         """
         Inicializa o objeto Consulta e dispara as validações automáticas.
@@ -24,8 +26,10 @@ class consulta:
             tipoConsluta (str): 'conveniado' ou 'particular'.
         """
         
+        consulta.contador_id+=1 # define o primeiro ID = 1 e os prximos serã 2,3,4... 
+        
         # Sanitização inicial: remove espaços e garante consistência
-        self.codPaciente = codPaciente
+        self.codPaciente = consulta.contador_id
         self.nomePaciente = nomePaciente.strip()
         self.data = data.strip()
         self.horario = horario.strip()
