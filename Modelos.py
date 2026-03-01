@@ -37,20 +37,20 @@ class consulta:
         self.tipoConsulta = tipoConsulta.strip().capitalize()
 
         if not self.validar_data(): 
-            self.data = None
+            raise ValueError("Data inválida!")
               
         if not self.validar_horario(): 
-            self.horario = None
+            raise ValueError("Horário inválido!")
             
         if not self.validar_tipo_consulta():
-            self.tipoConsulta = None
+            raise ValueError("Tipo de consulta inválida!")
             
     
     def validar_data(self):
         '''Validação se a data existe e formata no padrão dia/mês/ano'''
         try:
-            data = self.data 
-            data = datetime.datetime.strptime(data,"%d/%m/%Y") # usando a biblioteca datetime ele padroniza e formata a data em dia/mês/ano
+            data_obj = datetime.datetime.strptime(self.data ,"%d/%m/%Y")# usando a biblioteca datetime ele padroniza e formata a data em dia/mês/ano
+            self.data = data_obj.strftime("%d/%m/%Y")
             return True
             
         except ValueError:
@@ -59,10 +59,10 @@ class consulta:
     def validar_horario(self):
         '''Validação do horário existente, formata em hora/minuto e verifica se está nos 30 min de uma consulta anterior '''
         try:
-            horario = self.horario
-            horario = datetime.datetime.strptime(horario,"%H:%M") # Formata o horário da classe
+            horario_obj = datetime.datetime.strptime(self.horario,"%H:%M") # Formata o horário da classe
             
-            if horario.minute == 00 or horario.minute == 30:
+            if horario_obj.minute == 0 or horario_obj.minute == 30:
+                self.horario = horario_obj.strftime("%H:%M")
                 return True
             else: 
                 return False
