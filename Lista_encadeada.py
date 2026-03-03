@@ -5,50 +5,78 @@
 
 import datetime
 
+# Nodo da lista simplesmente encadeada
+class Nodo:
+    def __init__(self, consulta):
+        self.consulta = consulta
+        self.proximo = None
+
+
 class ListaConsultas:
     def __init__(self):
-        self.consultas = []
+        self.cabeca = None
 
-    # Converte data + horário da consulta para objeto datetime
+    # Converte data + horário para datetime
     def _converter_para_datetime(self, consulta):
         return datetime.datetime.strptime(
             f"{consulta.data} {consulta.horario}",
             "%d/%m/%Y %H:%M"
         )
 
-    # Adiciona consulta respeitando a regra dos 30 minutos
+    # Adicionar consulta respeitando intervalo de 30 minutos
     def adicionar_consulta(self, nova_consulta):
         novo_horario = self._converter_para_datetime(nova_consulta)
 
-        for consulta in self.consultas:
-            horario_existente = self._converter_para_datetime(consulta)
+        atual = self.cabeca
 
+        while atual is not None:
+            horario_existente = self._converter_para_datetime(atual.consulta)
             diferenca = abs(horario_existente - novo_horario)
 
             if diferenca < datetime.timedelta(minutes=30):
                 print("Já existe uma consulta nesse intervalo de 30 minutos.")
                 return False
 
-        self.consultas.append(nova_consulta)
+            atual = atual.proximo
+
+        # Inserção no início da lista
+        novo_nodo = Nodo(nova_consulta)
+        novo_nodo.proximo = self.cabeca
+        self.cabeca = novo_nodo
+
         print("Consulta adicionada com sucesso.")
         return True
 
-    # Busca por nome do paciente
+    # Buscar por nome
     def buscar_por_nome(self, nome):
         resultados = []
+        atual = self.cabeca
 
-        for consulta in self.consultas:
-            if consulta.nomePaciente.lower() == nome.lower():
-                resultados.append(consulta)
+        while atual is not None:
+            if atual.consulta.nomePaciente.lower() == nome.lower():
+                resultados.append(atual.consulta)
+
+            atual = atual.proximo
 
         return resultados
 
-    # Busca por data
+    # Buscar por data
     def buscar_por_data(self, data):
         resultados = []
+        atual = self.cabeca
 
-        for consulta in self.consultas:
-            if consulta.data == data:
-                resultados.append(consulta)
+        while atual is not None:
+            if atual.consulta.data == data:
+                resultados.append(atual.consulta)
+
+            atual = atual.proximo
 
         return resultados
+
+    # Método opcional para listar todas
+    def listar_todas(self):
+        atual = self.cabeca
+
+        while atual is not None:
+            print(atual.consulta)
+            atual = atual.proximo
