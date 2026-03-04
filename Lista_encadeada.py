@@ -1,8 +1,6 @@
 # Participantes: ALISON RODRIGUES PASTANA (202311316003), ARTUR FERREIRA SALES (202511316008), GLEIDSON GONZAGA DA SILVA (202511316022), HALLAN DIAS FERNANDES (202111316013), LEONARDO VINICIUS XAVIER NEVES (202511316034)
 # Algoritmos II - NELCILENO VIRGÍLIO DE SOUZA ARAÚJO
 
-# Lógica da lista e gerenciamento de nós
-
 import datetime
 
 # Estrutura do nó
@@ -65,11 +63,14 @@ class ListaConsultas:
     # Busca por data
     def buscar_por_data(self, data):
         resultados = []
-        data_busca = data.strip()
+        try:
+            data_normalizada = datetime.datetime.strptime(data.strip(), "%d/%m/%Y").strftime("%d/%m/%Y")
+        except ValueError:
+            return resultados
+
         atual = self.cabeca
-        
         while atual is not None:
-            if atual.consulta.data == data_busca:
+            if atual.consulta.data == data_normalizada:
                 resultados.append(atual.consulta)
             atual = atual.proximo
         return resultados
