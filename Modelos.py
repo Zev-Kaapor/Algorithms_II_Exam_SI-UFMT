@@ -39,7 +39,7 @@ class Consulta:
     def validar_data(self):
         try:
             data_obj = datetime.datetime.strptime(self.data, "%d/%m/%Y")
-            # Impede datas retroativas (opcional, mas recomendado)
+            # Impede datas retroativas
             if data_obj.date() < datetime.date.today():
                 return False
             self.data = data_obj.strftime("%d/%m/%Y")

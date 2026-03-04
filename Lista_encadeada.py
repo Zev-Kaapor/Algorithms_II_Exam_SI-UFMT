@@ -40,7 +40,7 @@ class ListaConsultas:
             if horario_existente:
                 diferenca = abs(horario_existente - novo_horario)
                 if diferenca < datetime.timedelta(minutes=30):
-                    return False # Conflito de horário
+                    return False
             
             atual = atual.proximo
 
